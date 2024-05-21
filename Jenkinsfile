@@ -29,8 +29,14 @@ pipeline {
                     // Define the local directory where you want to store the JAR file
                     def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\wsr-audit-report'
 
-                    // Copy the JAR file to the local directory
-                    bat "copy SimpleJavaProject.jar ${localDir}"
+                    // Check if the system is Windows
+                    if (isUnix()) {
+                        // Copy the JAR file to the local directory using 'cp' command
+                        sh "cp SimpleJavaProject.jar ${localDir}"
+                    } else {
+                        // Copy the JAR file to the local directory using 'copy' command
+                        bat "copy SimpleJavaProject.jar ${localDir}"
+                    }
                 }
             }
         }
