@@ -24,13 +24,13 @@ pipeline {
             steps {
                 script {
                     // Define the local directory where you want to copy the JAR file
-                    def localDir = 'C:/Users/chauhanarjit/Desktop/micro-audit'
+                    def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\wsr-audit-report'
 
                     // Ensure that the destination directory exists
-                    sh "mkdir -p ${localDir}"
+                    bat "mkdir ${localDir}"
 
                     // Copy the JAR file to the local directory
-                    sh "cp SimpleJavaProject.jar ${localDir}/"
+                    bat "copy SimpleJavaProject.jar ${localDir}"
                 }
             }
         }
