@@ -35,6 +35,10 @@ pipeline {
 
                     // Ensure that the destination directory exists
                     if (!dirExists) {
+                        // On Unix-like systems, use mkdir command
+                        sh "mkdir -p ${localDir}"
+                    } else {
+                        // On Windows systems, use mkdir command
                         bat "mkdir ${localDir}"
                     }
 
@@ -43,7 +47,13 @@ pipeline {
                     echo "JAR file exists: ${jarExists}"
 
                     // Copy the JAR file to the local directory
-                    bat "copy SimpleJavaProject.jar ${localDir}"
+                    if (isUnix()) {
+                        // On Unix-like systems, use cp command
+                        sh "cp SimpleJavaProject.jar ${localDir}/"
+                    } else {
+                        // On Windows systems, use copy command
+                        bat "copy SimpleJavaProject.jar ${localDir}"
+                    }
 
                     // List files in the local directory after copying
                     bat "dir ${localDir}"
