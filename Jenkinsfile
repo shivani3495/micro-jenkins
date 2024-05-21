@@ -26,8 +26,8 @@ pipeline {
                     // Define the local directory where you want to copy the JAR file
                     def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\wsr-audit-report'
 
-                    // Copy the JAR file to the local directory
-                    sh "copy SimpleJavaProject.jar \"${localDir}\""
+                    // Copy the JAR file to the local directory using xcopy
+                    bat "xcopy SimpleJavaProject.jar \"${localDir}\" /Y"
                 }
             }
         }
