@@ -20,11 +20,14 @@ pipeline {
             }
         }
 
-        stage('Archive') {
+        stage('Copy to Local Folder') {
             steps {
                 script {
-                    // Archive the JAR file as a build artifact
-                    archiveArtifacts artifacts: 'SimpleJavaProject.jar', fingerprint: true
+                    // Define the local directory where you want to copy the JAR file
+                    def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\wsr-audit-report'
+
+                    // Copy the JAR file to the local directory
+                    sh "copy SimpleJavaProject.jar \"${localDir}\""
                 }
             }
         }
