@@ -29,14 +29,11 @@ pipeline {
                     // Define the local directory where you want to store the JAR file
                     def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\jarfile'
 
-                    // Check if the system is Unix
-                    if (isUnix()) {
-                        // Copy the JAR file to the local directory using 'cp' command
-                        sh "cp SimpleJavaProject.jar ${localDir}"
-                    } else {
-                        // Copy the JAR file to the local directory using 'copy' command
-                        bat "copy SimpleJavaProject.jar ${localDir}"
-                    }
+                    // Ensure the directory exists and copy the JAR file to the local directory
+                    bat """
+                        if not exist "${localDir}" mkdir "${localDir}"
+                        copy SimpleJavaProject.jar "${localDir}"
+                    """
                 }
             }
         }
