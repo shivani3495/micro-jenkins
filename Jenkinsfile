@@ -1,12 +1,14 @@
 pipeline {
-    agent any
+    agent { 
+        label 'windows' 
+    }
 
     stages {
         stage('Compile') {
             steps {
                 script {
                     // Compile the Java source code
-                    sh 'javac -d out App.java'
+                    bat 'javac -d out App.java'
                 }
             }
         }
@@ -15,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Create the JAR file
-                    sh 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                    bat 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
                 }
             }
         }
