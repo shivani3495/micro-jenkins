@@ -17,7 +17,7 @@ pipeline {
                 script {
                     def jarFile = findFiles(glob: '**/target/*.jar')[0].path
                     def destinationDir = 'D:\\Shivani Devops\\my-java-project'
-                    bat "copy ${jarFile} ${destinationDir}"
+                    bat "copy ${jarFile} \"${destinationDir}\""
                 }
             }
         }
