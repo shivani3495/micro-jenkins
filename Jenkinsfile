@@ -2,48 +2,39 @@ pipeline {
     agent any
 
     stages {
-        stage('Compile') {
+        stage('Build') {
             steps {
                 script {
-                    // Compile the Java source code
+                    // Clean and build the project using Maven
                     if (isUnix()) {
-                        sh 'javac -d out App.java'
+                        sh 'mvn clean package'
                     } else {
-                        bat 'javac -d out App.java'
+                        bat 'mvn clean package'
                     }
                 }
             }
         }
 
-        stage('Package') {
+        stage('Move JAR Files') {
             steps {
                 script {
-                    // Create the JAR file
+                    // Define source and target directories
+                    def sourceDir = 'target'
+                    def destDir = 'D:\\Shivani Devops\\my-java-project'
+                    
+                    // Create destination directory if it does not exist
                     if (isUnix()) {
-                        sh 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                        sh "mkdir -p ${destDir}"
                     } else {
-                        bat 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                        bat "if not exist \"${destDir}\" mkdir \"${destDir}\""
                     }
-                }
-            }
-        }
 
-        stage('Archive') {
-            steps {
-                script {
-                    // Archive the JAR file as a build artifact
-                    archiveArtifacts artifacts: 'SimpleJavaProject.jar', fingerprint: true
-
-                    // Define the local directory where you want to store the JAR file
-                    def localDir = 'C:\\Users\\sainishivani\\Desktop\\jenkins'
-
-                    // Copy the JAR file to the local directory based on the operating system
+                    // Copy the JAR file to the destination directory
+                    def jarFile = 'my-java-project-1.0-SNAPSHOT.jar'
                     if (isUnix()) {
-                        // Copy the file assuming the directory already exists
-                        sh "cp SimpleJavaProject.jar ${localDir}"
+                        sh "cp ${sourceDir}/${jarFile} ${destDir}/"
                     } else {
-                        // Copy the file assuming the directory already exists
-                        bat "copy SimpleJavaProject.jar ${localDir}"
+                        bat "copy \"${sourceDir}\\${jarFile}\" \"${destDir}\\\""
                     }
                 }
             }
