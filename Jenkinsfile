@@ -39,12 +39,11 @@ pipeline {
 
                     // Copy the JAR file to the local directory based on the operating system
                     if (isUnix()) {
-                        sh "mkdir -p ${localDir} && cp SimpleJavaProject.jar ${localDir}"
+                        // Copy the file assuming the directory already exists
+                        sh "cp SimpleJavaProject.jar ${localDir}"
                     } else {
-                        bat """
-                            if not exist "${localDir}" mkdir "${localDir}"
-                            copy SimpleJavaProject.jar "${localDir}"
-                        """
+                        // Copy the file assuming the directory already exists
+                        bat "copy SimpleJavaProject.jar ${localDir}"
                     }
                 }
             }
