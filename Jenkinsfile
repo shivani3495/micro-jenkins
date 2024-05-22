@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        MAVEN_HOME = 'C:\Users\sainishivani\Downloads\apache-maven-3.9.6-bin\apache-maven-3.9.6'  // Update this to your Maven installation path
+    tools {
+        maven 'Maven 3.9.6' // This should match the name given in Global Tool Configuration
     }
 
     stages {
