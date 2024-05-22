@@ -1,14 +1,12 @@
 pipeline {
-    agent { 
-        label 'windows' 
-    }
+    agent any
 
     stages {
         stage('Compile') {
             steps {
                 script {
                     // Compile the Java source code
-                    bat 'javac -d out App.java'
+                    sh 'javac -d out App.java'
                 }
             }
         }
@@ -17,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Create the JAR file
-                    bat 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                    sh 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
                 }
             }
         }
@@ -31,11 +29,14 @@ pipeline {
                     // Define the local directory where you want to store the JAR file
                     def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\jarfile'
 
-                    // Ensure the directory exists and copy the JAR file to the local directory
-                    bat """
-                        if not exist "${localDir}" mkdir "${localDir}"
-                        copy SimpleJavaProject.jar "${localDir}"
-                    """
+                    // Check if the system is Unix
+                    if (isUnix()) {
+                        // Copy the JAR file to the local directory using 'cp' command
+                        sh "cp SimpleJavaProject.jar ${localDir}"
+                    } else {
+                        // Copy the JAR file to the local directory using 'copy' command
+                        bat "copy SimpleJavaProject.jar ${localDir}"
+                    }
                 }
             }
         }
