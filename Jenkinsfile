@@ -6,7 +6,11 @@ pipeline {
             steps {
                 script {
                     // Compile the Java source code
-                    sh 'javac -d out App.java'
+                    if (isUnix()) {
+                        sh 'javac -d out App.java'
+                    } else {
+                        bat 'javac -d out App.java'
+                    }
                 }
             }
         }
@@ -15,7 +19,11 @@ pipeline {
             steps {
                 script {
                     // Create the JAR file
-                    sh 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                    if (isUnix()) {
+                        sh 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                    } else {
+                        bat 'jar cfm SimpleJavaProject.jar manifest.mf -C out .'
+                    }
                 }
             }
         }
@@ -29,13 +37,14 @@ pipeline {
                     // Define the local directory where you want to store the JAR file
                     def localDir = 'C:\\Users\\chauhanarjit\\Desktop\\jarfile'
 
-                    // Check if the system is Unix
+                    // Copy the JAR file to the local directory based on the operating system
                     if (isUnix()) {
-                        // Copy the JAR file to the local directory using 'cp' command
-                        sh "cp SimpleJavaProject.jar ${localDir}"
+                        sh "mkdir -p ${localDir} && cp SimpleJavaProject.jar ${localDir}"
                     } else {
-                        // Copy the JAR file to the local directory using 'copy' command
-                        bat "copy SimpleJavaProject.jar ${localDir}"
+                        bat """
+                            if not exist "${localDir}" mkdir "${localDir}"
+                            copy SimpleJavaProject.jar "${localDir}"
+                        """
                     }
                 }
             }
